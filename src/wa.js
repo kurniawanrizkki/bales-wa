@@ -1,7 +1,7 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode');
 const path = require('node:path');
-const { UserModel, BusinessModel, ProductModel, LogModel } = require('./db');
+const { UserModel, BusinessModel, ProductModel, LogModel, ContactModel } = require('./db');
 const { generateAIReply } = require('./ai');
 const { buildBusinessContext } = require('./business');
 
@@ -193,6 +193,16 @@ async function startSession(userId) {
 
       const senderNumber = msg.from.replace(/@c\.us$/, '');
       const incomingText = msg.body.trim();
+
+      // Upsert contact to list
+      ContactModel.upsert(userId, senderNumber, { lastMessage: incomingText });
+
+      // Cek apakah pemilik mematikan AI untuk kontak ini (mode manual admin)
+      if (!ContactModel.isAiActiveForContact(userId, senderNumber)) {
+        console.log(`[User ${userId}] AI dimatikan untuk kontak ${senderNumber}. Mode manual admin.`);
+        LogModel.add(userId, senderNumber, incomingText, '[Mode Manual: AI Tidak Mengambil Alih]');
+        return;
+      }
 
       // Retrieve recent conversation history
       let history = sessionObj.historyMap.get(senderNumber) || [];

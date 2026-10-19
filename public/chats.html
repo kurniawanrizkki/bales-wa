@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kotak Masuk & Kendali AI — BalasWA</title>
+  <link rel="stylesheet" href="/app.css">
+  <style>
+    .chat-layout {
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      height: calc(100vh - 120px);
+      min-height: 580px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .contacts-pane {
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      background: #faf8fc;
+    }
+    .contacts-head {
+      padding: 16px 14px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+    .contacts-head h2 {
+      font-size: 15px;
+      margin: 0 0 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .search-box {
+      width: 100%;
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 10px;
+      font: inherit;
+      font-size: 12px;
+      background: #faf8fc;
+    }
+    .contact-list {
+      flex: 1;
+      overflow-y: auto;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .contact-item {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f0ebf5;
+      cursor: pointer;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      transition: background 0.15s;
+    }
+    .contact-item:hover { background: #f3eef8; }
+    .contact-item.active { background: #ede6f6; border-left: 4px solid var(--purple); }
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #e2d9f3;
+      color: var(--purple);
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .contact-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .contact-info strong {
+      display: block;
+      font-size: 13px;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .contact-info small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+    .contact-toggle {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .time {
+      font-size: 10px;
+      color: #8c8494;
+    }
+    .ai-badge {
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 3px 6px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .ai-badge.on { background: #e5f5ed; color: var(--green); }
+    .ai-badge.off { background: #fff1d9; color: #94620d; }
+
+    /* Right pane */
+    .chat-pane {
+      display: flex;
+      flex-direction: column;
+      background: #fbf9fd;
+    }
+    .chat-header {
+      padding: 14px 20px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .chat-header h3 {
+      font-size: 15px;
+      margin: 0;
+    }
+    .chat-header p {
+      margin: 2px 0 0;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .chat-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .bubble {
+      max-width: 70%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      position: relative;
+    }
+    .bubble-user {
+      align-self: flex-start;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      border-bottom-left-radius: 4px;
+    }
+    .bubble-bot {
+      align-self: flex-end;
+      background: #ede8fa;
+      color: #2a1b4e;
+      border-bottom-right-radius: 4px;
+    }
+    .bubble-manual {
+      align-self: flex-end;
+      background: #fef3c7;
+      color: #78350f;
+      border-bottom-right-radius: 4px;
+      font-style: italic;
+    }
+    .bubble small {
+      display: block;
+      font-size: 10px;
+      color: #8c8494;
+      margin-top: 4px;
+      text-align: right;
+    }
+    .empty-chat {
+      margin: auto;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .toggle-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .toggle-switch input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--purple);
+      cursor: pointer;
+    }
+    @media(max-width: 860px) {
+      .chat-layout { grid-template-columns: 1fr; height: auto; }
+      .contacts-pane { max-height: 280px; }
+      .chat-pane { min-height: 400px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <a class="brand" href="/"><span class="mark">BW</span>BalasWA</a>
+      <nav class="nav">
+        <a href="/app">WhatsApp & Bot</a>
+        <a href="/app/profile">Profil Usaha</a>
+        <a href="/app/products">Produk & Stok</a>
+        <a class="active" href="/app/chats">Kotak Masuk & Kontak</a>
+        <a href="/app/history">Riwayat Log</a>
+      </nav>
+      <div class="account">
+        <small id="email">Memuat…</small>
+        <button class="logout" id="logout">Keluar</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="head">
+        <div>
+          <h1>Kotak Masuk & Kendali AI</h1>
+          <p>Pantau percakapan tiap pelanggan. Centang untuk AI aktif, uncheck untuk ambil alih manual.</p>
+        </div>
+      </header>
+
+      <div class="chat-layout">
+        <!-- Panel Kontak (Kiri) -->
+        <section class="contacts-pane">
+          <div class="contacts-head">
+            <h2>Daftar Kontak <span id="contactCount" class="badge">0</span></h2>
+            <input type="text" id="search" class="search-box" placeholder="Cari nomor atau pesan…">
+          </div>
+          <ul id="contactsList" class="contact-list">
+            <li class="empty-chat" style="padding: 24px;">Memuat kontak…</li>
+          </ul>
+        </section>
+
+        <!-- Panel Chat (Kanan) -->
+        <section class="chat-pane">
+          <div class="chat-header" id="chatHeader" style="display: none;">
+            <div>
+              <h3 id="currentContactTitle">-</h3>
+              <p id="currentContactSubtitle">Status bot untuk kontak ini</p>
+            </div>
+            <div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="aiToggle">
+                <span id="aiToggleLabel">AI Ambil Alih</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="chat-body" id="chatBody">
+            <div class="empty-chat">
+              <strong>Pilih kontak di sebelah kiri</strong>
+              <p style="margin-top: 6px; font-size: 12px;">Klik nomor pelanggan untuk melihat pesan dan mengatur kendali AI.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const $ = s => document.querySelector(s);
+    const toast = $('#toast');
+    let contacts = [];
+    let activeNumber = null;
+
+    function say(msg) {
+      toast.textContent = msg;
+      toast.className = 'toast show';
+      setTimeout(() => toast.className = 'toast', 2500);
+    }
+
+    async function api(url, options = {}) {
+      const res = await fetch(url, options);
+      if (res.status === 401) { location = '/login'; throw Error('Sesi berakhir'); }
+      const data = await res.json();
+      if (!res.ok) throw Error(data.error || 'Gagal memproses request');
+      return data;
+    }
+
+    function formatTime(iso) {
+      if (!iso) return '';
+      const d = new Date(iso);
+      return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function renderContacts() {
+      const q = $('#search').value.toLowerCase().trim();
+      const list = $('#contactsList');
+      const filtered = contacts.filter(c => 
+        (c.sender_number || '').includes(q) || 
+        (c.last_message || '').toLowerCase().includes(q)
+      );
+
+      $('#contactCount').textContent = filtered.length;
+
+      if (!filtered.length) {
+        list.innerHTML = '<li class="empty-chat" style="padding: 30px;">Tidak ada kontak chat.</li>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(c => {
+        const isSelected = c.sender_number === activeNumber;
+        const initial = c.sender_number.slice(-2);
+        return `
+          <li class="contact-item ${isSelected ? 'active' : ''}" data-number="${c.sender_number}">
+            <div class="avatar">${initial}</div>
+            <div class="contact-info">
+              <strong>${c.sender_number}</strong>
+              <small>${c.last_message || 'Tidak ada pesan'}</small>
+            </div>
+            <div class="contact-toggle">
+              <span class="time">${formatTime(c.last_message_at)}</span>
+              <span class="ai-badge ${c.is_ai_active ? 'on' : 'off'}">${c.is_ai_active ? 'AI ON' : 'MANUAL'}</span>
+            </div>
+          </li>
+        `;
+      }).join('');
+    }
+
+    async function loadThread(senderNumber) {
+      activeNumber = senderNumber;
+      renderContacts();
+
+      try {
+        const data = await api(`/api/chats/${senderNumber}`);
+        $('#chatHeader').style.display = 'flex';
+        $('#currentContactTitle').textContent = `+${senderNumber}`;
+        const isAi = Boolean(data.contact?.is_ai_active);
+        $('#aiToggle').checked = isAi;
+        $('#aiToggleLabel').textContent = isAi ? 'AI Mengambil Alih (ON)' : 'Admin Manual (OFF)';
+
+        const body = $('#chatBody');
+        if (!data.messages?.length) {
+          body.innerHTML = '<div class="empty-chat">Belum ada riwayat pesan tercatat dengan kontak ini.</div>';
+          return;
+        }
+
+        body.innerHTML = data.messages.map(m => {
+          const userMsg = `
+            <div class="bubble bubble-user">
+              <div>${m.sender_message}</div>
+              <small>${formatTime(m.created_at)} · Pelanggan</small>
+            </div>
+          `;
+          const isManualNote = (m.bot_reply || '').includes('[Mode Manual');
+          const botMsg = m.bot_reply ? `
+            <div class="bubble ${isManualNote ? 'bubble-manual' : 'bubble-bot'}">
+              <div>${m.bot_reply}</div>
+              <small>${formatTime(m.created_at)} · ${isManualNote ? 'Sistem' : 'BalasWA Bot'}</small>
+            </div>
+          ` : '';
+          return userMsg + botMsg;
+        }).join('');
+
+        body.scrollTop = body.scrollHeight;
+      } catch (err) {
+        say(err.message);
+      }
+    }
+
+    // Toggle AI takeover for active contact
+    $('#aiToggle').onchange = async (e) => {
+      if (!activeNumber) return;
+      const checked = e.target.checked;
+      $('#aiToggleLabel').textContent = checked ? 'Menyimpan…' : 'Menyimpan…';
+      try {
+        await api(`/api/chats/${activeNumber}/toggle`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ is_ai_active: checked })
+        });
+        $('#aiToggleLabel').textContent = checked ? 'AI Mengambil Alih (ON)' : 'Admin Manual (OFF)';
+        say(checked ? 'AI aktif untuk kontak ini' : 'AI dinonaktifkan: Anda mengambil alih manual');
+        
+        // Update state in memory
+        const c = contacts.find(x => x.sender_number === activeNumber);
+        if (c) c.is_ai_active = checked ? 1 : 0;
+        renderContacts();
+      } catch (err) {
+        e.target.checked = !checked;
+        say(err.message);
+      }
+    };
+
+    // Click contact from list
+    $('#contactsList').onclick = (e) => {
+      const item = e.target.closest('.contact-item');
+      if (!item) return;
+      const number = item.dataset.number;
+      loadThread(number);
+    };
+
+    $('#search').oninput = renderContacts;
+
+    $('#logout').onclick = async () => {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      location = '/';
+    };
+
+    async function loadContacts() {
+      try {
+        const [me, res] = await Promise.all([
+          api('/api/user/me'),
+          api('/api/chats')
+        ]);
+        $('#email').textContent = me.email;
+        contacts = res.contacts || [];
+        renderContacts();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    (async () => {
+      await loadContacts();
+      // Auto-poll contacts every 4 seconds
+      setInterval(async () => {
+        try {
+          const res = await api('/api/chats');
+          contacts = res.contacts || [];
+          renderContacts();
+          if (activeNumber) {
+            // Refresh messages silently without jumping scroll if at bottom
+            const data = await api(`/api/chats/${activeNumber}`);
+            const isAi = Boolean(data.contact?.is_ai_active);
+            $('#aiToggle').checked = isAi;
+            $('#aiToggleLabel').textContent = isAi ? 'AI Mengambil Alih (ON)' : 'Admin Manual (OFF)';
+          }
+        } catch (_) {}
+      }, 4000);
+    })();
+  </script>
+</body>
+</html>

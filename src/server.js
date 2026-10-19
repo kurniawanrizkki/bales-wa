@@ -5,7 +5,7 @@ const path = require('node:path');
 const fs = require('node:fs');
 require('dotenv').config();
 
-const { UserModel, BusinessModel, ProductModel, LogModel, Subscription } = require('./db');
+const { UserModel, BusinessModel, ProductModel, LogModel, ContactModel, Subscription } = require('./db');
 const { startSession, stopSession, getSessionState } = require('./wa');
 const { SQLiteSessionStore } = require('./session-store');
 
@@ -67,6 +67,7 @@ app.get('/register', page('register.html'));
 app.get('/app', requireAuth, page('dashboard.html'));
 app.get('/app/profile', requireAuth, page('profile.html'));
 app.get('/app/products', requireAuth, page('products.html'));
+app.get('/app/chats', requireAuth, page('chats.html'));
 app.get('/app/history', requireAuth, page('history.html'));
 app.get('/app/business', (_req, res) => res.redirect(301, '/app/profile'));
 
@@ -186,6 +187,28 @@ app.post('/api/user/settings', requireAuth, (req, res) => {
   });
 
   res.json({ message: 'Pengaturan berhasil disimpan' });
+});
+
+// Contact & Chat Takeover API
+app.get('/api/chats', requireAuth, (req, res) => {
+  res.json({ contacts: ContactModel.list(req.session.userId) });
+});
+
+app.get('/api/chats/:senderNumber', requireAuth, (req, res) => {
+  const { senderNumber } = req.params;
+  const contact = ContactModel.get(req.session.userId, senderNumber);
+  const messages = LogModel.getByContact(req.session.userId, senderNumber, 100);
+  res.json({
+    contact: contact || { sender_number: senderNumber, is_ai_active: 1 },
+    messages
+  });
+});
+
+app.post('/api/chats/:senderNumber/toggle', requireAuth, (req, res) => {
+  const { senderNumber } = req.params;
+  const { is_ai_active } = req.body;
+  const updated = ContactModel.setAIActive(req.session.userId, senderNumber, is_ai_active);
+  res.json({ success: true, contact: updated });
 });
 
 // WhatsApp Management API

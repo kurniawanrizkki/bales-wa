@@ -60,7 +60,26 @@ db.exec(`
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
+
+  CREATE TABLE IF NOT EXISTS contact_controls (
+    user_id INTEGER NOT NULL,
+    sender_number TEXT NOT NULL,
+    contact_name TEXT DEFAULT '',
+    is_ai_active INTEGER NOT NULL DEFAULT 1,
+    last_message TEXT DEFAULT '',
+    last_message_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, sender_number)
+  );
 `);
+
+try {
+  db.exec(`
+    INSERT OR IGNORE INTO contact_controls (user_id, sender_number, last_message, last_message_at)
+    SELECT user_id, sender_number, sender_message, MAX(created_at)
+    FROM chat_logs
+    GROUP BY user_id, sender_number
+  `);
+} catch (_) {}
 
 for (const migration of [
   "ALTER TABLE users ADD COLUMN trial_ends_at DATETIME",
@@ -179,6 +198,66 @@ const LogModel = {
       ORDER BY id DESC
       LIMIT ?
     `).all(userId, limit);
+  },
+  getByContact(userId, senderNumber, limit = 100) {
+    return db.prepare(`
+      SELECT id, sender_number, sender_message, bot_reply, created_at
+      FROM chat_logs
+      WHERE user_id = ? AND sender_number = ?
+      ORDER BY id ASC
+      LIMIT ?
+    `).all(userId, senderNumber, limit);
+  }
+};
+
+const ContactModel = {
+  upsert(userId, senderNumber, { contactName = '', lastMessage = '', isAiActive } = {}) {
+    const existing = db.prepare('SELECT is_ai_active, contact_name FROM contact_controls WHERE user_id = ? AND sender_number = ?').get(userId, senderNumber);
+    const activeVal = isAiActive !== undefined ? (isAiActive ? 1 : 0) : (existing ? existing.is_ai_active : 1);
+    const finalName = contactName || (existing ? existing.contact_name : '');
+    
+    db.prepare(`
+      INSERT INTO contact_controls (user_id, sender_number, contact_name, is_ai_active, last_message, last_message_at)
+      VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+      ON CONFLICT(user_id, sender_number) DO UPDATE SET
+        contact_name = CASE WHEN excluded.contact_name != '' THEN excluded.contact_name ELSE contact_controls.contact_name END,
+        is_ai_active = excluded.is_ai_active,
+        last_message = CASE WHEN excluded.last_message != '' THEN excluded.last_message ELSE contact_controls.last_message END,
+        last_message_at = CURRENT_TIMESTAMP
+    `).run(userId, senderNumber, finalName, activeVal, lastMessage);
+    
+    return this.get(userId, senderNumber);
+  },
+  list(userId) {
+    return db.prepare(`
+      SELECT user_id, sender_number, contact_name, is_ai_active, last_message, last_message_at
+      FROM contact_controls
+      WHERE user_id = ?
+      ORDER BY last_message_at DESC
+    `).all(userId);
+  },
+  get(userId, senderNumber) {
+    return db.prepare(`
+      SELECT user_id, sender_number, contact_name, is_ai_active, last_message, last_message_at
+      FROM contact_controls
+      WHERE user_id = ? AND sender_number = ?
+    `).get(userId, senderNumber) || null;
+  },
+  setAIActive(userId, senderNumber, isAiActive) {
+    const val = isAiActive ? 1 : 0;
+    const res = db.prepare(`
+      UPDATE contact_controls
+      SET is_ai_active = ?
+      WHERE user_id = ? AND sender_number = ?
+    `).run(val, userId, senderNumber);
+    if (!res.changes) {
+      this.upsert(userId, senderNumber, { isAiActive: val });
+    }
+    return this.get(userId, senderNumber);
+  },
+  isAiActiveForContact(userId, senderNumber) {
+    const row = db.prepare('SELECT is_ai_active FROM contact_controls WHERE user_id = ? AND sender_number = ?').get(userId, senderNumber);
+    return row ? Boolean(row.is_ai_active) : true;
   }
 };
 
@@ -188,5 +267,6 @@ module.exports = {
   BusinessModel,
   ProductModel,
   LogModel,
+  ContactModel,
   Subscription
 };
