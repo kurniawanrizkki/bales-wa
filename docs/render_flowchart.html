@@ -5,317 +5,411 @@
   <title>Flowchart Alur Sistem BalasWA</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
-    
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-      background: #0f0d15;
-      color: #f1f0f5;
+      background: #f8fafc;
+      color: #0f172a;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 40px;
+      padding: 30px;
       min-height: 100vh;
     }
 
     .canvas {
-      width: 1400px;
-      background: #16141f;
-      border: 1px solid #282436;
-      border-radius: 20px;
-      padding: 36px 40px 44px;
-      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
+      width: 1420px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 34px 40px 36px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
       position: relative;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 34px;
-      border-bottom: 1px solid #282436;
-      padding-bottom: 22px;
+      margin-bottom: 26px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 18px;
     }
     .badge {
       display: inline-block;
-      padding: 6px 14px;
-      background: rgba(109, 69, 215, 0.2);
-      border: 1px solid #6d45d7;
-      color: #b79cfa;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      border-radius: 999px;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
-    .header h1 {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: #ffffff;
-      margin-bottom: 6px;
-    }
-    .header p {
-      font-size: 13px;
-      color: #928b9d;
-    }
-
-    .grid-lanes {
-      display: grid;
-      grid-template-columns: 240px 270px 290px 270px 250px;
-      gap: 16px;
-      position: relative;
-    }
-
-    .lane {
-      background: #1c1926;
-      border: 1px solid #2c273d;
-      border-radius: 14px;
-      padding: 18px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .lane-title {
+      padding: 5px 14px;
+      background: #ede9fe;
+      border: 1px solid #c4b5fd;
+      color: #6d28d9;
       font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.08em;
+      border-radius: 999px;
+      margin-bottom: 8px;
       text-transform: uppercase;
-      padding: 8px 12px;
-      border-radius: 8px;
-      text-align: center;
-      margin-bottom: 4px;
     }
-    .lane-1 .lane-title { background: #2e1d52; color: #c4a9fd; border: 1px solid #6d45d7; }
-    .lane-2 .lane-title { background: #0c334d; color: #7dd3fc; border: 1px solid #0284c7; }
-    .lane-3 .lane-title { background: #3c144a; color: #f0abfc; border: 1px solid #a21caf; }
-    .lane-4 .lane-title { background: #1f2937; color: #cbd5e1; border: 1px solid #4b5563; }
-    .lane-5 .lane-title { background: #3b280c; color: #fde68a; border: 1px solid #d97706; }
-
-    .node {
-      background: #232030;
-      border: 1px solid #36314a;
-      border-radius: 10px;
-      padding: 13px 14px;
-      font-size: 12px;
-      line-height: 1.5;
-      color: #dedbe6;
-      position: relative;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    }
-    .node strong {
-      display: block;
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .node code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10.5px;
-      background: rgba(0, 0, 0, 0.35);
-      padding: 2px 5px;
-      border-radius: 4px;
-      color: #a5b4fc;
-    }
-
-    .node.accent-purple { border-color: #6d45d7; background: #221b36; }
-    .node.accent-green { border-color: #10b981; background: #132a24; }
-    .node.accent-green strong { color: #34d399; }
-    .node.accent-blue { border-color: #0284c7; background: #132738; }
-    .node.accent-red { border-color: #ef4444; background: #2e181c; }
-    .node.accent-red strong { color: #f87171; }
-    .node.accent-amber { border-color: #d97706; background: #2c2013; }
-    .node.accent-amber strong { color: #fbbf24; }
-
-    .decision {
-      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-      background: #2d2417;
-      border: 2px solid #f59e0b;
-      min-height: 96px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 16px 22px;
-      font-size: 10.5px;
-      font-weight: 700;
-      color: #fef3c7;
-    }
-
-    .arrow-down {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #6d667c;
-      font-size: 14px;
-      margin: -6px 0;
-    }
-
-    .flow-tag {
-      display: inline-block;
-      font-size: 9.5px;
+    .header h1 {
+      font-size: 24px;
       font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 4px;
-      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: #0f172a;
       margin-bottom: 4px;
     }
-    .tag-wa { background: #064e3b; color: #6ee7b7; }
-    .tag-filter { background: #7f1d1d; color: #fca5a5; }
-    .tag-ai { background: #3730a3; color: #c7d2fe; }
-    .tag-db { background: #78350f; color: #fde68a; }
+    .header p {
+      font-size: 13px;
+      color: #64748b;
+    }
 
-    .footer-bar {
-      margin-top: 26px;
-      padding-top: 18px;
-      border-top: 1px solid #282436;
+    .grid-container {
+      position: relative;
+      width: 1340px;
+      height: 720px;
+    }
+
+    /* Swimlanes */
+    .swimlane {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border-radius: 12px;
+      border: 1.5px solid #cbd5e1;
+      background: #f8fafc;
+    }
+    .lane-header {
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      text-align: center;
+      border-bottom: 1.5px solid #cbd5e1;
+    }
+
+    .lane-1 { left: 0; width: 230px; background: #faf5ff; border-color: #d8b4fe; }
+    .lane-1 .lane-header { background: #f3e8ff; color: #7e22ce; border-bottom-color: #d8b4fe; }
+
+    .lane-2 { left: 245px; width: 285px; background: #f0f9ff; border-color: #bae6fd; }
+    .lane-2 .lane-header { background: #e0f2fe; color: #0369a1; border-bottom-color: #bae6fd; }
+
+    .lane-3 { left: 545px; width: 285px; background: #fdf4ff; border-color: #f5d0fe; }
+    .lane-3 .lane-header { background: #fae8ff; color: #a21caf; border-bottom-color: #f5d0fe; }
+
+    .lane-4 { left: 845px; width: 240px; background: #f1f5f9; border-color: #cbd5e1; }
+    .lane-4 .lane-header { background: #e2e8f0; color: #334155; border-bottom-color: #cbd5e1; }
+
+    .lane-5 { left: 1100px; width: 240px; background: #fffbeb; border-color: #fde68a; }
+    .lane-5 .lane-header { background: #fef3c7; color: #b45309; border-bottom-color: #fde68a; }
+
+    /* Nodes & Blocks */
+    .card {
+      position: absolute;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: #334155;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+      z-index: 2;
+    }
+    .card strong {
+      display: block;
+      color: #0f172a;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .step-num {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
+      text-align: center;
+      border-radius: 50%;
+      background: #6d28d9;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+    .card code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      background: #f1f5f9;
+      padding: 1px 4px;
+      border-radius: 3px;
+      color: #475569;
+    }
+
+    /* Colors */
+    .card-purple { border-color: #c084fc; border-left: 4px solid #7c3aed; }
+    .card-blue { border-color: #7dd3fc; border-left: 4px solid #0284c7; }
+    .card-pink { border-color: #f472b6; border-left: 4px solid #db2777; }
+    .card-slate { border-color: #94a3b8; border-left: 4px solid #475569; }
+    .card-amber { border-color: #fcd34d; border-left: 4px solid #d97706; }
+    .card-green { border-color: #86efac; border-left: 4px solid #16a34a; background: #f0fdf4; }
+    .card-green strong { color: #15803d; }
+    .card-red { border-color: #fca5a5; border-left: 4px solid #dc2626; background: #fef2f2; }
+    .card-red strong { color: #b91c1c; }
+
+    /* Decision Diamond */
+    .diamond-wrap {
+      position: absolute;
+      width: 170px;
+      height: 78px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .diamond-shape {
+      position: absolute;
+      width: 78px;
+      height: 78px;
+      background: #fffbeb;
+      border: 1.5px solid #d97706;
+      transform: rotate(45deg);
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    }
+    .diamond-text {
+      position: relative;
+      z-index: 3;
+      font-size: 10px;
+      font-weight: 700;
+      color: #92400e;
+      line-height: 1.3;
+      padding: 0 10px;
+    }
+
+    /* SVG Overlay for Connectors */
+    .svg-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1340px;
+      height: 720px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .arrow-line {
+      fill: none;
+      stroke-width: 2;
+    }
+    .arrow-label {
+      font-size: 10px;
+      font-weight: 700;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .footer-legend {
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1.5px solid #e2e8f0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 11px;
-      color: #7a7387;
+      font-size: 11.5px;
+      color: #64748b;
     }
-    .footer-bar b { color: #b5adc2; }
+    .footer-legend b { color: #334155; }
+    .legend-item { display: inline-flex; align-items: center; gap: 6px; margin-left: 18px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
   </style>
 </head>
 <body>
   <div class="canvas">
     <div class="header">
-      <span class="badge">Architecture & Data Flow</span>
-      <h1>Alur Kerja Sistem BalasWA (WhatsApp Auto-Reply UMKM)</h1>
-      <p>Integrasi WhatsApp Web Engine, Contextual Business Filter, Local SQLite, dan 9Router AI Gateway (Model cx/gpt-5.6-terra)</p>
+      <span class="badge">Sistem & Arsitektur BalasWA</span>
+      <h1>Flowchart Alur Sistem dan Integrasi Layanan BalasWA UMKM</h1>
+      <p>Alur end-to-end dari pesan pelanggan WhatsApp masuk, filter konteks, integrasi AI 9Router, hingga balasan faktual dikirim</p>
     </div>
 
-    <div class="grid-lanes">
-      <!-- Lane 1: Pelanggan -->
-      <div class="lane lane-1">
-        <div class="lane-title">1. Pelanggan</div>
-        <div class="node accent-purple">
-          <span class="flow-tag tag-wa">Incoming Chat</span>
-          <strong>Pelanggan Kirim Pesan WA</strong>
-          Kirim pertanyaan produk, harga, stok, alamat, atau pesan order.
-        </div>
-        <div class="arrow-down">↓</div>
-        <div style="height: 480px; display: flex; align-items: center; justify-content: center; border: 1px dashed #352d47; border-radius: 10px; color: #6d647e; font-size: 11px; text-align: center; padding: 14px;">
-          Menunggu respon otomatis bot...<br><small style="color: #4f495e;">(SLA balasan: ~1-3 detik)</small>
-        </div>
-        <div class="arrow-down">↓</div>
-        <div class="node accent-green">
-          <span class="flow-tag" style="background:#064e3b; color:#a7f3d0;">Success Reply</span>
-          <strong>Pelanggan Terima Balasan</strong>
-          Jawaban sopan, padat, dan faktual sesuai data toko terkini.
-        </div>
+    <div class="grid-container">
+      <!-- 5 Swimlanes -->
+      <div class="swimlane lane-1"><div class="lane-header">1. Pelanggan (WhatsApp)</div></div>
+      <div class="swimlane lane-2"><div class="lane-header">2. WA Engine (Chromium)</div></div>
+      <div class="swimlane lane-3"><div class="lane-header">3. Logic & Context Builder</div></div>
+      <div class="swimlane lane-4"><div class="lane-header">4. 9Router AI Gateway</div></div>
+      <div class="swimlane lane-5"><div class="lane-header">5. Pemilik Usaha & SQLite</div></div>
+
+      <!-- SVG CONNECTORS -->
+      <svg class="svg-layer">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#475569"/>
+          </marker>
+          <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#7c3aed"/>
+          </marker>
+          <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0284c7"/>
+          </marker>
+          <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#16a34a"/>
+          </marker>
+          <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#dc2626"/>
+          </marker>
+          <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#d97706"/>
+          </marker>
+        </defs>
+
+        <!-- 1 -> 2: Pelanggan kirim pesan -> WA Engine -->
+        <path d="M 215 95 L 260 95" class="arrow-line" stroke="#7c3aed" marker-end="url(#arrow-purple)"/>
+
+        <!-- 2 -> Decision Relevansi: WA Engine -> Rhombus -->
+        <path d="M 387 125 L 387 150" class="arrow-line" stroke="#0284c7" marker-end="url(#arrow-blue)"/>
+
+        <!-- Decision Relevansi -> TIDAK -> Skip -->
+        <path d="M 387 230 L 387 258" class="arrow-line" stroke="#dc2626" marker-end="url(#arrow-red)"/>
+        <text x="393" y="246" fill="#dc2626" class="arrow-label">TIDAK</text>
+
+        <!-- Decision Relevansi -> YA -> Logic (Cek Instant) -->
+        <path d="M 445 190 L 565 190" class="arrow-line" stroke="#16a34a" marker-end="url(#arrow-green)"/>
+        <text x="468" y="182" fill="#16a34a" class="arrow-label">YA (Relevan)</text>
+
+        <!-- Logic: Decision Instant -> YA -> Template Instan -->
+        <path d="M 687 230 L 687 260" class="arrow-line" stroke="#d97706" marker-end="url(#arrow-amber)"/>
+        <text x="693" y="248" fill="#d97706" class="arrow-label">YA (Pola Salam/Order)</text>
+
+        <!-- Logic: Decision Instant -> TIDAK -> Context Builder -->
+        <path d="M 745 190 L 800 190 L 800 360 L 795 360" class="arrow-line" stroke="#7c3aed" marker-end="url(#arrow-purple)"/>
+        <text x="806" y="270" fill="#7c3aed" class="arrow-label">TIDAK (Perlu AI)</text>
+
+        <!-- SQLite Database -> Context Builder (Dotted Line) -->
+        <path d="M 1115 220 L 825 220 L 825 390 L 805 390" class="arrow-line" stroke="#d97706" stroke-dasharray="4,4" marker-end="url(#arrow-amber)"/>
+        <text x="910" y="212" fill="#b45309" class="arrow-label">Ambil Data Toko & Stok</text>
+
+        <!-- Template Instan -> Kirim Balasan (Skip LLM) -->
+        <path d="M 565 295 L 490 295 L 490 535 L 495 535" class="arrow-line" stroke="#0284c7" stroke-dasharray="4,4" marker-end="url(#arrow-blue)"/>
+        <text x="500" y="325" fill="#0284c7" class="arrow-label">Bypass LLM</text>
+
+        <!-- Context Builder -> 9Router AI Gateway -->
+        <path d="M 805 425 L 860 425" class="arrow-line" stroke="#7c3aed" marker-end="url(#arrow-purple)"/>
+        <text x="808" y="415" fill="#7c3aed" class="arrow-label">Prompt + Konteks</text>
+
+        <!-- AI Gateway: Request -> AI Reply -->
+        <path d="M 965 465 L 965 500" class="arrow-line" stroke="#475569" marker-end="url(#arrow)"/>
+
+        <!-- AI Reply -> WA Engine (client.sendMessage) -->
+        <path d="M 860 540 L 515 540" class="arrow-line" stroke="#16a34a" marker-end="url(#arrow-green)"/>
+        <text x="645" y="532" fill="#15803d" class="arrow-label">Teks Balasan AI Faktual</text>
+
+        <!-- WA Engine -> SQLite (Simpan Log & Kuota) -->
+        <path d="M 515 570 L 687 570 L 687 625 L 1115 625 L 1115 480" class="arrow-line" stroke="#b45309" stroke-dasharray="4,4" marker-end="url(#arrow-amber)"/>
+        <text x="730" y="618" fill="#b45309" class="arrow-label">Catat chat_logs & Kurangi Kuota</text>
+
+        <!-- WA Engine -> Pelanggan (Kirim Balasan Sukses) -->
+        <path d="M 260 550 L 215 550" class="arrow-line" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arrow-green)"/>
+        <text x="222" y="540" fill="#15803d" class="arrow-label" style="font-weight:800;">Balas WA</text>
+      </svg>
+
+      <!-- LANE 1: Pelanggan -->
+      <div class="card card-purple" style="left: 15px; top: 65px; width: 200px;">
+        <strong><span class="step-num">1</span>Pesan Masuk</strong>
+        Pelanggan kirim pertanyaan via WA (produk, stok, jam buka, rekening).
       </div>
 
-      <!-- Lane 2: WhatsApp Web Engine -->
-      <div class="lane lane-2">
-        <div class="lane-title">2. WA Engine (Chromium)</div>
-        <div class="node accent-blue">
-          <strong>Event message_create</strong>
-          whatsapp-web.js menangkap <code>msg.from</code> dan <code>msg.body</code>.
-        </div>
-        <div class="arrow-down">↓</div>
-        <div class="node accent-amber">
-          <strong>Filter Pesan Non-Bisnis</strong>
-          • Abaikan grup (<code>isGroupMsg</code>)<br>
-          • Abaikan broadcast & status WA<br>
-          • Abaikan chat pribadi di luar konteks
-        </div>
-        <div class="arrow-down">↓</div>
-        <div class="node accent-red">
-          <span class="flow-tag tag-filter">Filter Reject</span>
-          <strong>Abaikan Chat (Skip)</strong>
-          Tidak membalas pesan personal agar kuota & privasi aman.
-        </div>
-        <div style="height: 195px;"></div>
-        <div class="arrow-down">↓</div>
-        <div class="node accent-blue">
-          <strong>client.sendMessage()</strong>
-          Kirim teks balasan ke nomor pelanggan melalui Chromium.
-        </div>
+      <div class="card card-green" style="left: 15px; top: 510px; width: 200px;">
+        <strong><span class="step-num">8</span>Balasan Diterima</strong>
+        Pelanggan terima balasan akurat, ramah, dan cepat (~1-2 detik).
       </div>
 
-      <!-- Lane 3: Backend Logic & Context -->
-      <div class="lane lane-3">
-        <div class="lane-title">3. Logic & Context</div>
-        <div style="height: 98px;"></div>
-        <div class="node accent-amber">
-          <strong>Cek Balasan Instan</strong>
-          Pola salam (Hai/Halo) atau pesan order format tetap?
-        </div>
-        <div class="arrow-down">↓</div>
-        <div class="node">
-          <strong>Balasan Instan</strong>
-          Langsung balas template cepat tanpa panggil AI (hemat kuota).
-        </div>
-        <div class="arrow-down">↓</div>
-        <div class="node accent-purple">
-          <span class="flow-tag tag-ai">Prompt Builder</span>
-          <strong>Build Context Toko:</strong>
-          • Data Toko & Jam Operasional<br>
-          • Katalog Produk & Stok Terkini<br>
-          • Riwayat 6 Pesan Terakhir<br>
-          • Prompt Khusus Pemilik
-        </div>
-        <div class="arrow-down">↓</div>
-        <div class="node accent-green">
-          <span class="flow-tag tag-db">Database Log</span>
-          <strong>Catat Riwayat & Kuota</strong>
-          Simpan log di <code>chat_logs</code> dan kurangi kuota trial / paket.
-        </div>
+      <!-- LANE 2: WA Engine -->
+      <div class="card card-blue" style="left: 260px; top: 65px; width: 255px;">
+        <strong><span class="step-num">2</span>Event message_create</strong>
+        <code>whatsapp-web.js</code> + Chromium menangkap nomor dan isi teks chat.
       </div>
 
-      <!-- Lane 4: 9Router AI Gateway -->
-      <div class="lane lane-4">
-        <div class="lane-title">4. 9Router AI Gateway</div>
-        <div style="height: 290px;"></div>
-        <div class="arrow-down">↓</div>
-        <div class="node accent-purple">
-          <span class="flow-tag tag-ai">API Inference</span>
-          <strong>POST /v1/chat/completions</strong>
-          <code>model: cx/gpt-5.6-terra</code><br>
-          <code>temperature: 0.7</code><br>
-          <code>max_tokens: 600</code>
-        </div>
-        <div class="arrow-down">↓</div>
-        <div class="node accent-green">
-          <strong>Hasil Balasan AI</strong>
-          AI menyusun jawaban berbasis konteks usaha tanpa boleh mengarang fakta/stok.
-        </div>
-        <div style="height: 140px;"></div>
+      <!-- Decision 1 -->
+      <div class="diamond-wrap" style="left: 302px; top: 150px;">
+        <div class="diamond-shape"></div>
+        <div class="diamond-text">Relevan<br>Konteks Toko?</div>
       </div>
 
-      <!-- Lane 5: Pemilik Usaha & SQLite -->
-      <div class="lane lane-5">
-        <div class="lane-title">5. Pemilik Usaha & DB</div>
-        <div class="node accent-amber">
-          <span class="flow-tag tag-db">Dashboard Web</span>
-          <strong>Kelola Data Usaha:</strong>
-          • <code>/app/profile</code> Profil Toko<br>
-          • <code>/app/products</code> Produk & Stok<br>
-          • <code>/app</code> Scan QR & System Prompt<br>
-          • <code>/app/history</code> Pantau Chat Log
-        </div>
-        <div class="arrow-down">↓</div>
-        <div class="node accent-amber" style="background:#261c10;">
-          <span class="flow-tag tag-db">SQLite Storage</span>
-          <strong>Database Lokal (app.db):</strong>
-          • <code>users</code>: Akun & Token<br>
-          • <code>business_profiles</code>: Info Toko<br>
-          • <code>products</code>: Harga & Stok<br>
-          • <code>chat_logs</code>: Riwayat Chat
-        </div>
-        <div style="height: 295px; border: 1px dashed #3d2f1f; border-radius: 10px; margin-top: 10px; display: flex; align-items: center; justify-content: center; color: #947a54; font-size: 11px; text-align: center; padding: 10px;">
-          Perubahan harga atau stok pada dashboard langsung terpakai pada chat berikutnya secara realtime.
-        </div>
+      <div class="card card-red" style="left: 280px; top: 260px; width: 215px; text-align: center;">
+        <strong>Abaikan Pesan (Drop)</strong>
+        Abaikan grup, status, broadcast, atau chat non-bisnis.
+      </div>
+
+      <div class="card card-blue" style="left: 260px; top: 520px; width: 255px;">
+        <strong><span class="step-num">7</span>client.sendMessage()</strong>
+        Chromium mengirim balasan langsung ke nomor WhatsApp pelanggan.
+      </div>
+
+      <!-- LANE 3: Logic & Context -->
+      <!-- Decision 2 -->
+      <div class="diamond-wrap" style="left: 602px; top: 150px;">
+        <div class="diamond-shape"></div>
+        <div class="diamond-text"><span class="step-num">3</span>Pola Balasan<br>Instan?</div>
+      </div>
+
+      <div class="card card-amber" style="left: 565px; top: 262px; width: 245px;">
+        <strong>Template Respon Instan</strong>
+        Format salam awal atau order cepat dibalas otomatis tanpa panggil LLM.
+      </div>
+
+      <div class="card card-purple" style="left: 565px; top: 345px; width: 245px;">
+        <strong><span class="step-num">4</span>Context Builder</strong>
+        Merangkai prompt dinamis:
+        • Identitas, jam buka, rekening<br>
+        • Katalog produk & stok aktual<br>
+        • 6 riwayat percakapan terakhir<br>
+        • System prompt pemilik usaha
+      </div>
+
+      <!-- LANE 4: 9Router AI Gateway -->
+      <div class="card card-slate" style="left: 860px; top: 395px; width: 210px;">
+        <strong><span class="step-num">5</span>Inference AI</strong>
+        <code>POST /v1/chat/completions</code><br>
+        • Model: <code>cx/gpt-5.6-terra</code><br>
+        • Temp: 0.7 | Max: 600 token
+      </div>
+
+      <div class="card card-green" style="left: 860px; top: 502px; width: 210px;">
+        <strong><span class="step-num">6</span>Jawaban Terstruktur</strong>
+        AI menghasilkan respon ramah berbasis data nyata (tanpa halusinasi).
+      </div>
+
+      <!-- LANE 5: Pemilik Usaha & SQLite -->
+      <div class="card card-amber" style="left: 1115px; top: 65px; width: 210px;">
+        <strong>Dashboard Web</strong>
+        Pemilik mengelola data via:<br>
+        • <code>/app/profile</code> Profil Toko<br>
+        • <code>/app/products</code> Stok Produk<br>
+        • <code>/app</code> QR WhatsApp & Prompt
+      </div>
+
+      <div class="card card-amber" style="left: 1115px; top: 195px; width: 210px; background: #fffdf5;">
+        <strong>SQLite (app.db)</strong>
+        Database lokal terstruktur:<br>
+        • <code>users</code>: Akun & Token<br>
+        • <code>business_profiles</code>: Toko<br>
+        • <code>products</code>: Harga & Stok<br>
+        • <code>chat_logs</code>: Riwayat Chat
+      </div>
+
+      <div class="card card-slate" style="left: 1115px; top: 370px; width: 210px; font-size: 11px;">
+        <strong>Sinkronisasi Realtime</strong>
+        Perubahan harga atau stok di web langsung digunakan bot pada chat berikutnya.
       </div>
     </div>
 
-    <div class="footer-bar">
-      <div><b>BalasWA UMKM Architecture</b> · File Diagram: <code>docs/alur-sistem.drawio</code></div>
-      <div>Tunnel: <b>Cloudflare Quick Tunnel (HTTPS)</b> · Engine: <b>Node.js + whatsapp-web.js</b></div>
+    <!-- Footer Legend -->
+    <div class="footer-legend">
+      <div><b>BalasWA Engineering Flowchart</b> · Notasi Standar: Terminator, Process Card, Decision Diamond, Data Store</div>
+      <div>
+        <span class="legend-item"><span class="dot" style="background:#7c3aed;"></span> Alur Input Chat</span>
+        <span class="legend-item"><span class="dot" style="background:#16a34a;"></span> Alur Output Balasan</span>
+        <span class="legend-item"><span class="dot" style="background:#d97706;"></span> Query Database & Cache</span>
+        <span class="legend-item"><span class="dot" style="background:#dc2626;"></span> Filter Non-Bisnis</span>
+      </div>
     </div>
   </div>
 </body>
