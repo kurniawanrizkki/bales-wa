@@ -8,10 +8,9 @@
   function renderActivation({ profile, products = [], wa }) {
     const root = document.querySelector('#activation');
     if (!root) return;
-    // ponytail: Aktivasi hanya dipusatkan di Profil Usaha; buat wizard lintas halaman bila onboarding bertambah.
-    if (location.pathname !== '/app/profile') {
+
+    if (sessionStorage.getItem('activation_dismissed') === 'true') {
       root.classList.remove('show');
-      root.innerHTML = '';
       return;
     }
 
@@ -24,6 +23,12 @@
     const next = STEPS.find(step => !done[step.key]);
 
     if (!next) {
+      root.classList.remove('show');
+      return;
+    }
+
+    const currentPath = location.pathname;
+    if (currentPath === next.href || (next.key === 'whatsapp' && currentPath === '/app')) {
       root.classList.remove('show');
       return;
     }
@@ -42,7 +47,16 @@
       <div class="modal-actions"><button class="btn activation-later" type="button">Lanjut nanti</button><a class="btn primary activation-next" href="${next.href}">${next.action}</a></div>
     </div>`;
     root.classList.add('show');
-    root.querySelector('.activation-later').onclick = () => root.classList.remove('show');
+    root.onclick = (e) => {
+      if (e.target === root) {
+        sessionStorage.setItem('activation_dismissed', 'true');
+        root.classList.remove('show');
+      }
+    };
+    root.querySelector('.activation-later').onclick = () => {
+      sessionStorage.setItem('activation_dismissed', 'true');
+      root.classList.remove('show');
+    };
   }
 
   window.renderActivation = renderActivation;
