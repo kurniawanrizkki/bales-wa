@@ -17,8 +17,8 @@ db.exec(`
     password_hash TEXT NOT NULL,
     system_prompt TEXT DEFAULT 'Kamu adalah admin customer service UMKM yang ramah, santun, dan solutif. Jawab pertanyaan seputar produk, harga, jam operasional, dan tata cara pemesanan dengan singkat dan padat. Jika pembeli ingin pesan atau transfer, arahkan rekening dan minta kirim bukti transfer agar admin manusia memverifikasi.',
     router9_api_key TEXT DEFAULT '',
-    router9_base_url TEXT DEFAULT 'http://127.0.0.1:20128/v1',
-    ai_model TEXT DEFAULT 'ag/gemini-3.8-flash-medium',
+    router9_base_url TEXT DEFAULT '',
+    ai_model TEXT DEFAULT '',
     is_bot_active INTEGER DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
@@ -155,8 +155,8 @@ const UserModel = {
     stmt.run(
       system_prompt,
       router9_api_key || '',
-      router9_base_url || process.env.ROUTER9_BASE_URL || 'http://127.0.0.1:20128/v1',
-      ai_model || process.env.ROUTER9_DEFAULT_MODEL || 'ag/gemini-3.8-flash-medium',
+      router9_base_url || '',
+      ai_model || '',
       is_bot_active ? 1 : 0,
       id
     );

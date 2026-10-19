@@ -221,12 +221,13 @@ async function startSession(userId) {
         return;
       }
 
-      console.log(`[User ${userId}] Meminta jawaban AI (${user.ai_model}) untuk ${senderNumber}...`);
+      const activeModel = user.ai_model || process.env.ROUTER9_DEFAULT_MODEL || 'cx/gpt-5.6-terra';
+      console.log(`[User ${userId}] Meminta jawaban AI (${activeModel}) untuk ${senderNumber}...`);
       // Call 9Router
       const reply = await generateAIReply({
-        apiKey: user.router9_api_key,
-        baseUrl: user.router9_base_url,
-        model: user.ai_model,
+        apiKey: user.router9_api_key || process.env.ROUTER9_API_KEY,
+        baseUrl: user.router9_base_url || process.env.ROUTER9_BASE_URL,
+        model: activeModel,
         systemPrompt: `${businessContext}\n\nINSTRUKSI TAMBAHAN PEMILIK:\n${user.system_prompt}`,
         userMessage: incomingText,
         conversationHistory: history

@@ -121,8 +121,8 @@ app.get('/api/user/me', requireAuth, (req, res) => {
     system_prompt: user.system_prompt,
     router9_api_key: user.router9_api_key ? '••••••••' : '',
     has_api_key: Boolean(user.router9_api_key || process.env.ROUTER9_API_KEY || process.env.DEEPSEEK_API_KEY),
-    router9_base_url: user.router9_base_url,
-    ai_model: user.ai_model,
+    router9_base_url: user.router9_base_url || process.env.ROUTER9_BASE_URL || 'https://api.9router.com/v1',
+    ai_model: user.ai_model || process.env.ROUTER9_DEFAULT_MODEL || 'openai/gpt-4o-mini',
     is_bot_active: Boolean(user.is_bot_active),
     trial_ends_at: user.trial_ends_at,
     trial_days_left: trialDaysLeft,
@@ -174,8 +174,8 @@ app.post('/api/user/settings', requireAuth, (req, res) => {
   UserModel.updateSettings(req.session.userId, {
     system_prompt: system_prompt || '',
     router9_api_key: finalKey || '',
-    router9_base_url: router9_base_url || process.env.ROUTER9_BASE_URL || 'http://127.0.0.1:20128/v1',
-    ai_model: ai_model || process.env.ROUTER9_DEFAULT_MODEL || 'ag/gemini-3.8-flash-medium',
+    router9_base_url: router9_base_url || '',
+    ai_model: ai_model || '',
     is_bot_active: Boolean(is_bot_active)
   });
 
