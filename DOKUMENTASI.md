@@ -98,6 +98,17 @@ URL: `/app/history`
 
 ---
 
+### 2.8 Kotak Masuk & Kendali AI per Kontak
+URL: `/app/chats`
+![Kotak Masuk](docs/screenshots/08_kotak_masuk.png)
+* **Fitur**:
+  - Tampilan percakapan ala WhatsApp Web dua kolom (Daftar kontak di kiri, thread percakapan di kanan).
+  - Sakelar Kendali AI per Kontak: Bila dicentang (`AI ON`), pesan pelanggan dibalas otomatis oleh bot. Bila di-uncheck (`MANUAL`), AI tidak membalas pesan dari nomor tersebut sehingga pemilik/admin manusia dapat mengambil alih diskusi secara langsung tanpa interupsi bot.
+  - Pencarian kontak berdasarkan nomor telepon atau cuplikan isi pesan.
+  - Pembaruan realtime via polling otomatis.
+
+---
+
 ## 3. Spesifikasi Teknis & Deployment
 
 * **Backend & Runtime**: Node.js v25 + Express + SQLite (`node:sqlite`).

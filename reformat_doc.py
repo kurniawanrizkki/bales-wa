@@ -64,6 +64,13 @@ IMAGES = [
         'width': 460,
         'height': 258,
         'caption': 'Gambar 3.8 Antarmuka Pemantauan Riwayat Percakapan dan Log Balasan AI'
+    },
+    {
+        'tag': '[[IMG_08]]',
+        'url': f'{BASE_URL}/08_kotak_masuk.png',
+        'width': 460,
+        'height': 258,
+        'caption': 'Gambar 3.9 Antarmuka Kotak Masuk dan Kendali AI per Kontak Pelanggan'
     }
 ]
 
@@ -113,6 +120,10 @@ PARAS = [
     ('IMAGE_PLACEHOLDER', '[[IMG_07]]', {}),
     ('CAPTION', 'Gambar 3.8 Antarmuka Pemantauan Riwayat Percakapan dan Log Balasan AI', {}),
     ('BODY', 'Modul transparansi percakapan yang menampilkan seluruh rekaman chat masuk dari pelanggan beserta respon otomatis yang dihasilkan bot untuk keperluan audit kualitas layanan.', {}),
+    ('SCREEN_TITLE', '8. Kotak Masuk dan Kendali AI per Kontak', {}),
+    ('IMAGE_PLACEHOLDER', '[[IMG_08]]', {}),
+    ('CAPTION', 'Gambar 3.9 Antarmuka Kotak Masuk dan Kendali AI per Kontak Pelanggan', {}),
+    ('BODY', 'Halaman kotak masuk interaktif yang menampilkan daftar kontak pelanggan di panel kiri serta riwayat percakapan di panel kanan. Pemilik usaha dapat mencentang sakelar AI untuk membiarkan bot otomatis membalas, atau melakukan uncheck sewaktu-waktu agar admin manusia dapat mengambil alih percakapan secara manual tanpa diinterupsi oleh bot.', {}),
     ('HEADING_3', 'C. Simulasi Percakapan WhatsApp dan Respon Bot', {}),
     ('BODY', 'Pengujian balasan otomatis bot telah divalidasi menggunakan skenario pertanyaan pelanggan nyata berdasarkan katalog produk yang tersimpan:', {}),
     ('CHAT_USER', 'Pelanggan: "Kaka, untuk baju gamis pink ready stok ukuran L dan harganya berapa?"', {}),
