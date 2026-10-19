@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BalasWA membantu UMKM membalas chat WhatsApp berdasarkan produk, stok, harga, dan lokasi usaha.">
+  <title>BalasWA — Admin WhatsApp yang Tahu Bisnis Anda</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+    :root { --ink:#181520; --muted:#686273; --purple:#6d45d7; --purple-dark:#5834bd; --soft:#f5f1fb; --line:#e7e0f0; --white:#fff; --green:#178a63; --yellow:#f2bd35; --shadow:0 18px 50px rgba(55,37,84,.10); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; font-family:Manrope, sans-serif; color:var(--ink); background:#fbf9fd; }
+    a { color:inherit; text-decoration:none; }
+    button,a { -webkit-tap-highlight-color:transparent; }
+    .wrap { width:min(1160px, calc(100% - 40px)); margin:auto; }
+    nav { height:76px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:800; font-size:20px; }
+    .brand-mark { width:35px; height:35px; border-radius:10px; background:var(--purple); color:#fff; display:grid; place-items:center; font-size:14px; }
+    .nav-links { display:flex; gap:28px; font-size:14px; font-weight:600; color:#4d4757; }
+    .actions { display:flex; align-items:center; gap:12px; }
+    .btn { min-height:46px; padding:0 20px; border-radius:9px; display:inline-flex; align-items:center; justify-content:center; border:1px solid transparent; font-size:14px; font-weight:700; cursor:pointer; }
+    .btn-primary { color:#fff; background:var(--purple); box-shadow:0 10px 24px rgba(109,69,215,.22); }
+    .btn-primary:hover { background:var(--purple-dark); }
+    .btn-quiet { border-color:var(--line); background:#fff; }
+    .hero { min-height:690px; display:grid; grid-template-columns:.92fr 1.08fr; align-items:center; gap:56px; padding:72px 0 80px; }
+    .eyebrow { display:inline-flex; padding:8px 12px; border:1px solid #d9cfec; border-radius:999px; color:var(--purple); font-size:11px; font-weight:800; letter-spacing:.1em; }
+    h1 { margin:22px 0 22px; font-size:clamp(44px,5.6vw,72px); line-height:1.01; letter-spacing:-.055em; max-width:720px; }
+    h1 span { color:var(--purple); }
+    .lead { max-width:560px; color:var(--muted); font-size:18px; line-height:1.65; }
+    .hero-cta { display:flex; gap:12px; margin-top:30px; flex-wrap:wrap; }
+    .micro { color:#777080; font-size:12px; margin-top:14px; }
+    .product-stage { min-height:510px; position:relative; display:grid; align-items:center; }
+    .orb { position:absolute; inset:5% 7% 5% 12%; border-radius:48% 52% 43% 57%; background:#eee7fa; transform:rotate(-5deg); }
+    .mock { position:relative; margin-left:6%; width:90%; background:#fff; border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); overflow:hidden; transform:rotate(1deg); }
+    .mock-top { height:58px; display:flex; align-items:center; justify-content:space-between; padding:0 18px; border-bottom:1px solid var(--line); }
+    .dots { display:flex; gap:6px; }.dots i{width:8px;height:8px;border-radius:50%;background:#d6ccdf}.dots i:first-child{background:var(--purple)}
+    .mock-body { display:grid; grid-template-columns:150px 1fr; min-height:360px; }
+    .side { background:#faf8fc; border-right:1px solid var(--line); padding:20px 14px; }
+    .side div { padding:10px; margin-bottom:6px; font-size:11px; border-radius:7px; color:#756f7c; }.side div:first-child{background:#eee8fa;color:var(--purple);font-weight:700}
+    .catalog { padding:24px; }
+    .catalog-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }.catalog-head b{font-size:18px}.add{background:var(--purple);color:#fff;padding:8px 11px;border-radius:7px;font-size:10px}
+    .item { display:grid; grid-template-columns:42px 1fr auto; gap:12px; align-items:center; padding:13px 0; border-bottom:1px solid #eeeaf3; }
+    .thumb { width:42px;height:42px;border-radius:9px;background:#eee8fa;display:grid;place-items:center;color:var(--purple);font-weight:800;font-size:11px}.item strong{display:block;font-size:12px}.item small{color:#817a87;font-size:9px}.stock{font-size:10px;color:var(--green);background:#e8f6f0;padding:5px 7px;border-radius:999px}.stock.out{color:#b34848;background:#fbeaea}
+    .float { position:absolute; padding:13px 15px; border-radius:12px; background:#fff; box-shadow:var(--shadow); border:1px solid var(--line); font-size:11px; font-weight:700; z-index:2; }.f1{right:-2%;top:4%}.f2{left:-3%;bottom:13%}.float span{display:block;color:var(--green);font-size:18px;margin-bottom:2px}
+    .trust { background:#fff; border-block:1px solid var(--line); padding:28px 0; }.trust-row{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}.trust b{font-size:14px}.trust-list{display:flex;gap:34px;color:#726b79;font-size:13px;font-weight:700}
+    section { padding:100px 0; }.section-kicker{color:var(--purple);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.section-title{font-size:clamp(34px,4vw,50px);line-height:1.08;letter-spacing:-.04em;margin:14px 0 18px;max-width:720px}.section-copy{color:var(--muted);line-height:1.7;max-width:640px}
+    .steps { display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:48px }.step{padding-top:22px;border-top:2px solid var(--line)}.step-no{font-size:12px;color:var(--purple);font-weight:800}.step h3{font-size:19px;margin:16px 0 9px}.step p{color:var(--muted);font-size:14px;line-height:1.6;margin:0}
+    .features { background:var(--soft); }.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}.feature{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px}.feature b{font-size:16px}.feature p{color:var(--muted);font-size:13px;line-height:1.6;margin:10px 0 0}.feature-mark{width:34px;height:34px;border-radius:50%;background:#eee8fa;color:var(--purple);display:grid;place-items:center;font-weight:800;margin-bottom:18px}
+    .pricing-head{text-align:center}.pricing-head .section-title,.pricing-head .section-copy{margin-left:auto;margin-right:auto}.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:46px;align-items:stretch}.price{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px;display:flex;flex-direction:column}.price.featured{border:2px solid var(--purple);box-shadow:var(--shadow);position:relative}.popular{position:absolute;right:18px;top:18px;background:#eee8fa;color:var(--purple);padding:6px 8px;border-radius:999px;font-size:10px;font-weight:800}.price h3{margin:0 0 10px;font-size:20px}.price .amount{font-size:38px;font-weight:800;letter-spacing:-.04em;margin:15px 0 6px}.price .amount small{font-size:12px;color:var(--muted);font-weight:600}.price ul{padding:0;list-style:none;margin:22px 0 28px}.price li{font-size:13px;padding:7px 0;color:#57515f}.price li:before{content:'✓';color:var(--green);font-weight:800;margin-right:8px}.price .btn{margin-top:auto}
+    .faq{display:grid;grid-template-columns:.7fr 1.3fr;gap:70px}.faq-list details{border-top:1px solid var(--line);padding:20px 0}.faq-list summary{font-weight:700;cursor:pointer}.faq-list p{color:var(--muted);font-size:14px;line-height:1.65}
+    .final{padding:0 0 100px}.final-box{background:var(--ink);color:#fff;border-radius:20px;padding:52px;display:flex;justify-content:space-between;align-items:center;gap:30px}.final-box h2{font-size:36px;line-height:1.15;margin:0 0 10px}.final-box p{color:#cfc9d5;margin:0}.final-box .btn{background:#fff;color:var(--ink);white-space:nowrap}
+    footer{border-top:1px solid var(--line);padding:28px 0 40px;color:#7a7380;font-size:12px}.footer-row{display:flex;justify-content:space-between;gap:20px}
+    :focus-visible{outline:3px solid #bea8ef;outline-offset:3px}
+    @media(max-width:860px){.nav-links{display:none}.hero{grid-template-columns:1fr;padding-top:42px}.product-stage{min-height:440px}.steps,.feature-grid,.prices{grid-template-columns:1fr 1fr}.faq{grid-template-columns:1fr}.prices .price:last-child{grid-column:1/-1}.final-box{align-items:flex-start;flex-direction:column}.mock-body{grid-template-columns:110px 1fr}}
+    @media(max-width:600px){.wrap{width:min(100% - 28px,1160px)}nav{height:68px}.actions .btn-quiet{display:none}.hero{gap:20px;padding-bottom:60px}.lead{font-size:16px}.product-stage{min-height:390px}.mock{margin:0;width:100%}.mock-body{grid-template-columns:85px 1fr;min-height:300px}.catalog{padding:15px}.float{display:none}.steps,.feature-grid,.prices{grid-template-columns:1fr}.prices .price:last-child{grid-column:auto}section{padding:72px 0}.trust-list{gap:16px}.final-box{padding:32px 24px}.footer-row{flex-direction:column}.side{padding:12px 6px}.side div{padding:8px 5px}.item{grid-template-columns:34px 1fr}.thumb{width:34px;height:34px}.stock{display:none}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <nav aria-label="Navigasi utama">
+      <a class="brand" href="/"><span class="brand-mark">BW</span> BalasWA</a>
+      <div class="nav-links"><a href="#cara">Cara kerja</a><a href="#fitur">Fitur</a><a href="#harga">Harga</a><a href="#faq">FAQ</a></div>
+      <div class="actions"><a class="btn btn-quiet" href="/login">Masuk</a><a class="btn btn-primary" href="/register">Coba 7 Hari</a></div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <div>
+        <span class="eyebrow">AUTO-REPLY WHATSAPP UNTUK UMKM</span>
+        <h1>Admin WhatsApp yang tahu <span>bisnis Anda.</span></h1>
+        <p class="lead">Balas pertanyaan pelanggan berdasarkan produk, stok, harga, lokasi, dan jam buka yang Anda atur sendiri. Pesan pribadi diabaikan.</p>
+        <div class="hero-cta"><a class="btn btn-primary" href="/register">Mulai Gratis 7 Hari</a><a class="btn btn-quiet" href="#cara">Lihat Cara Kerja</a></div>
+        <p class="micro">Tanpa kartu kredit · 1 nomor WhatsApp · Batalkan kapan saja</p>
+      </div>
+      <div class="product-stage" aria-label="Pratinjau katalog dan stok BalasWA">
+        <div class="orb" aria-hidden="true"></div>
+        <div class="mock">
+          <div class="mock-top"><b>Hijab & Fashion Chic</b><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div></div>
+          <div class="mock-body">
+            <div class="side"><div>Katalog</div><div>Profil Usaha</div><div>WhatsApp</div><div>Riwayat Chat</div></div>
+            <div class="catalog"><div class="catalog-head"><b>Produk & Stok</b><span class="add">+ Produk</span></div>
+              <div class="item"><span class="thumb">PS</span><span><strong>Pashmina Silk</strong><small>Rp45.000 · Sage</small></span><span class="stock">Stok 18</span></div>
+              <div class="item"><span class="thumb">GR</span><span><strong>Gamis Rayon</strong><small>Rp125.000 · All Size</small></span><span class="stock">Stok 7</span></div>
+              <div class="item"><span class="thumb">BC</span><span><strong>Blouse Crinkle</strong><small>Rp65.000 · Mocca</small></span><span class="stock out">Habis</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="float f1"><span>Aktif</span>WhatsApp terhubung</div><div class="float f2"><span>7 hari</span>Uji coba gratis</div>
+      </div>
+    </div>
+
+    <div class="trust"><div class="wrap trust-row"><b>Satu tempat untuk informasi yang paling sering ditanyakan pelanggan.</b><div class="trust-list"><span>Produk</span><span>Stok</span><span>Harga</span><span>Lokasi</span><span>Jam buka</span></div></div></div>
+
+    <section id="cara"><div class="wrap"><span class="section-kicker">Cara kerja</span><h2 class="section-title">Dari daftar sampai bot aktif dalam tiga langkah.</h2><p class="section-copy">Tidak perlu mengedit kode. Informasi usaha menjadi sumber jawaban bot.</p><div class="steps">
+      <article class="step"><span class="step-no">01</span><h3>Isi profil usaha</h3><p>Tambahkan nama usaha, alamat, lokasi Maps, jam buka, pembayaran, dan aturan pengiriman.</p></article>
+      <article class="step"><span class="step-no">02</span><h3>Masukkan katalog</h3><p>Catat produk, harga, varian, satuan, dan stok. Perubahan langsung dipakai pada chat berikutnya.</p></article>
+      <article class="step"><span class="step-no">03</span><h3>Tautkan WhatsApp</h3><p>Scan QR dari dashboard. Bot mulai menjawab chat bisnis dan mengabaikan pesan di luar konteks.</p></article>
+    </div></div></section>
+
+    <section id="fitur" class="features"><div class="wrap"><span class="section-kicker">Dibangun untuk usaha nyata</span><h2 class="section-title">Bukan bot yang menebak. Jawaban berasal dari data Anda.</h2><div class="feature-grid">
+      <article class="feature"><span class="feature-mark">01</span><b>Katalog terstruktur</b><p>Nama produk, SKU, deskripsi, kategori, harga, varian, dan satuan.</p></article>
+      <article class="feature"><span class="feature-mark">02</span><b>Stok terkini</b><p>Produk stok nol otomatis disebut habis. Pemilik bisa memperbarui stok kapan saja.</p></article>
+      <article class="feature"><span class="feature-mark">03</span><b>Profil bisnis lengkap</b><p>Alamat, Google Maps, jam buka, metode pembayaran, pengiriman, dan kontak admin.</p></article>
+      <article class="feature"><span class="feature-mark">04</span><b>Filter konteks usaha</b><p>Pesan pribadi, grup, status, broadcast, dan obrolan di luar bisnis tidak dibalas.</p></article>
+      <article class="feature"><span class="feature-mark">05</span><b>Jawaban berbasis AI</b><p>DeepSeek menyusun balasan ramah tanpa boleh mengarang fakta bisnis.</p></article>
+      <article class="feature"><span class="feature-mark">06</span><b>Riwayat yang jelas</b><p>Lihat pertanyaan pelanggan dan jawaban bot untuk evaluasi layanan.</p></article>
+    </div></div></section>
+
+    <section id="harga"><div class="wrap"><div class="pricing-head"><span class="section-kicker">Harga transparan</span><h2 class="section-title">Mulai gratis. Bayar setelah terbukti membantu.</h2><p class="section-copy">Paket sederhana untuk tahap awal. Kuota menjaga kualitas layanan dan kapasitas server.</p></div><div class="prices">
+      <article class="price"><h3>Uji Coba</h3><p>Kenali alur lengkap.</p><div class="amount">Rp0 <small>/ 7 hari</small></div><ul><li>1 nomor WhatsApp</li><li>100 balasan AI</li><li>Semua fitur inti</li><li>Tanpa kartu kredit</li></ul><a class="btn btn-quiet" href="/register">Mulai Gratis</a></article>
+      <article class="price featured"><span class="popular">PALING SESUAI</span><h3>Starter</h3><p>Untuk usaha yang mulai rutin.</p><div class="amount">Rp99.000 <small>/ bulan</small></div><ul><li>1 nomor WhatsApp</li><li>3.000 balasan AI</li><li>100 produk</li><li>Riwayat 30 hari</li></ul><a class="btn btn-primary" href="/register">Coba 7 Hari</a></article>
+      <article class="price"><h3>Tumbuh</h3><p>Untuk chat lebih ramai.</p><div class="amount">Rp199.000 <small>/ bulan</small></div><ul><li>2 nomor WhatsApp</li><li>10.000 balasan AI</li><li>Produk tanpa batas wajar</li><li>Riwayat 90 hari</li></ul><a class="btn btn-quiet" href="/register">Coba 7 Hari</a></article>
+    </div></div></section>
+
+    <section id="faq"><div class="wrap faq"><div><span class="section-kicker">FAQ</span><h2 class="section-title">Pertanyaan sebelum mulai.</h2></div><div class="faq-list">
+      <details><summary>Apakah perlu kartu kredit untuk trial?</summary><p>Tidak. Trial aktif selama 7×24 jam sejak pendaftaran, maksimal 100 balasan AI.</p></details>
+      <details><summary>Apa yang terjadi jika stok habis?</summary><p>Jika stok produk bernilai nol, bot menyampaikan bahwa produk habis dan tidak boleh menyatakan produk tersedia.</p></details>
+      <details><summary>Apakah semua pesan dibalas?</summary><p>Tidak. Sistem mengabaikan grup, status, broadcast, pesan sendiri, dan pesan yang tidak terkait usaha.</p></details>
+      <details><summary>Apakah ini memakai API resmi WhatsApp?</summary><p>Belum. MVP memakai WhatsApp Web sehingga sesi dapat terputus dan perlu ditautkan ulang. Risiko ini dijelaskan sebelum penggunaan.</p></details>
+    </div></div></section>
+
+    <section class="final"><div class="wrap final-box"><div><h2>Siapkan admin WhatsApp bisnis Anda.</h2><p>Isi usaha, tambah produk, scan QR. Trial berjalan 7 hari.</p></div><a class="btn" href="/register">Mulai Uji Coba</a></div></section>
+  </main>
+  <footer><div class="wrap footer-row"><span>© 2026 BalasWA. Produk tahap awal untuk UMKM.</span><span>Privasi · Ketentuan · Bantuan</span></div></footer>
+</body>
+</html>
