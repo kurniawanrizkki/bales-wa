@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Flowchart Alur Sistem BalasWA</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: #0f0d15;
+      color: #f1f0f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      min-height: 100vh;
+    }
+
+    .canvas {
+      width: 1400px;
+      background: #16141f;
+      border: 1px solid #282436;
+      border-radius: 20px;
+      padding: 36px 40px 44px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 34px;
+      border-bottom: 1px solid #282436;
+      padding-bottom: 22px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      background: rgba(109, 69, 215, 0.2);
+      border: 1px solid #6d45d7;
+      color: #b79cfa;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .header h1 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+    .header p {
+      font-size: 13px;
+      color: #928b9d;
+    }
+
+    .grid-lanes {
+      display: grid;
+      grid-template-columns: 240px 270px 290px 270px 250px;
+      gap: 16px;
+      position: relative;
+    }
+
+    .lane {
+      background: #1c1926;
+      border: 1px solid #2c273d;
+      border-radius: 14px;
+      padding: 18px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .lane-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .lane-1 .lane-title { background: #2e1d52; color: #c4a9fd; border: 1px solid #6d45d7; }
+    .lane-2 .lane-title { background: #0c334d; color: #7dd3fc; border: 1px solid #0284c7; }
+    .lane-3 .lane-title { background: #3c144a; color: #f0abfc; border: 1px solid #a21caf; }
+    .lane-4 .lane-title { background: #1f2937; color: #cbd5e1; border: 1px solid #4b5563; }
+    .lane-5 .lane-title { background: #3b280c; color: #fde68a; border: 1px solid #d97706; }
+
+    .node {
+      background: #232030;
+      border: 1px solid #36314a;
+      border-radius: 10px;
+      padding: 13px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #dedbe6;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+    .node strong {
+      display: block;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .node code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: #a5b4fc;
+    }
+
+    .node.accent-purple { border-color: #6d45d7; background: #221b36; }
+    .node.accent-green { border-color: #10b981; background: #132a24; }
+    .node.accent-green strong { color: #34d399; }
+    .node.accent-blue { border-color: #0284c7; background: #132738; }
+    .node.accent-red { border-color: #ef4444; background: #2e181c; }
+    .node.accent-red strong { color: #f87171; }
+    .node.accent-amber { border-color: #d97706; background: #2c2013; }
+    .node.accent-amber strong { color: #fbbf24; }
+
+    .decision {
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      background: #2d2417;
+      border: 2px solid #f59e0b;
+      min-height: 96px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 16px 22px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #fef3c7;
+    }
+
+    .arrow-down {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6d667c;
+      font-size: 14px;
+      margin: -6px 0;
+    }
+
+    .flow-tag {
+      display: inline-block;
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .tag-wa { background: #064e3b; color: #6ee7b7; }
+    .tag-filter { background: #7f1d1d; color: #fca5a5; }
+    .tag-ai { background: #3730a3; color: #c7d2fe; }
+    .tag-db { background: #78350f; color: #fde68a; }
+
+    .footer-bar {
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px solid #282436;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #7a7387;
+    }
+    .footer-bar b { color: #b5adc2; }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="header">
+      <span class="badge">Architecture & Data Flow</span>
+      <h1>Alur Kerja Sistem BalasWA (WhatsApp Auto-Reply UMKM)</h1>
+      <p>Integrasi WhatsApp Web Engine, Contextual Business Filter, Local SQLite, dan 9Router AI Gateway (Model cx/gpt-5.6-terra)</p>
+    </div>
+
+    <div class="grid-lanes">
+      <!-- Lane 1: Pelanggan -->
+      <div class="lane lane-1">
+        <div class="lane-title">1. Pelanggan</div>
+        <div class="node accent-purple">
+          <span class="flow-tag tag-wa">Incoming Chat</span>
+          <strong>Pelanggan Kirim Pesan WA</strong>
+          Kirim pertanyaan produk, harga, stok, alamat, atau pesan order.
+        </div>
+        <div class="arrow-down">↓</div>
+        <div style="height: 480px; display: flex; align-items: center; justify-content: center; border: 1px dashed #352d47; border-radius: 10px; color: #6d647e; font-size: 11px; text-align: center; padding: 14px;">
+          Menunggu respon otomatis bot...<br><small style="color: #4f495e;">(SLA balasan: ~1-3 detik)</small>
+        </div>
+        <div class="arrow-down">↓</div>
+        <div class="node accent-green">
+          <span class="flow-tag" style="background:#064e3b; color:#a7f3d0;">Success Reply</span>
+          <strong>Pelanggan Terima Balasan</strong>
+          Jawaban sopan, padat, dan faktual sesuai data toko terkini.
+        </div>
+      </div>
+
+      <!-- Lane 2: WhatsApp Web Engine -->
+      <div class="lane lane-2">
+        <div class="lane-title">2. WA Engine (Chromium)</div>
+        <div class="node accent-blue">
+          <strong>Event message_create</strong>
+          whatsapp-web.js menangkap <code>msg.from</code> dan <code>msg.body</code>.
+        </div>
+        <div class="arrow-down">↓</div>
+        <div class="node accent-amber">
+          <strong>Filter Pesan Non-Bisnis</strong>
+          • Abaikan grup (<code>isGroupMsg</code>)<br>
+          • Abaikan broadcast & status WA<br>
+          • Abaikan chat pribadi di luar konteks
+        </div>
+        <div class="arrow-down">↓</div>
+        <div class="node accent-red">
+          <span class="flow-tag tag-filter">Filter Reject</span>
+          <strong>Abaikan Chat (Skip)</strong>
+          Tidak membalas pesan personal agar kuota & privasi aman.
+        </div>
+        <div style="height: 195px;"></div>
+        <div class="arrow-down">↓</div>
+        <div class="node accent-blue">
+          <strong>client.sendMessage()</strong>
+          Kirim teks balasan ke nomor pelanggan melalui Chromium.
+        </div>
+      </div>
+
+      <!-- Lane 3: Backend Logic & Context -->
+      <div class="lane lane-3">
+        <div class="lane-title">3. Logic & Context</div>
+        <div style="height: 98px;"></div>
+        <div class="node accent-amber">
+          <strong>Cek Balasan Instan</strong>
+          Pola salam (Hai/Halo) atau pesan order format tetap?
+        </div>
+        <div class="arrow-down">↓</div>
+        <div class="node">
+          <strong>Balasan Instan</strong>
+          Langsung balas template cepat tanpa panggil AI (hemat kuota).
+        </div>
+        <div class="arrow-down">↓</div>
+        <div class="node accent-purple">
+          <span class="flow-tag tag-ai">Prompt Builder</span>
+          <strong>Build Context Toko:</strong>
+          • Data Toko & Jam Operasional<br>
+          • Katalog Produk & Stok Terkini<br>
+          • Riwayat 6 Pesan Terakhir<br>
+          • Prompt Khusus Pemilik
+        </div>
+        <div class="arrow-down">↓</div>
+        <div class="node accent-green">
+          <span class="flow-tag tag-db">Database Log</span>
+          <strong>Catat Riwayat & Kuota</strong>
+          Simpan log di <code>chat_logs</code> dan kurangi kuota trial / paket.
+        </div>
+      </div>
+
+      <!-- Lane 4: 9Router AI Gateway -->
+      <div class="lane lane-4">
+        <div class="lane-title">4. 9Router AI Gateway</div>
+        <div style="height: 290px;"></div>
+        <div class="arrow-down">↓</div>
+        <div class="node accent-purple">
+          <span class="flow-tag tag-ai">API Inference</span>
+          <strong>POST /v1/chat/completions</strong>
+          <code>model: cx/gpt-5.6-terra</code><br>
+          <code>temperature: 0.7</code><br>
+          <code>max_tokens: 600</code>
+        </div>
+        <div class="arrow-down">↓</div>
+        <div class="node accent-green">
+          <strong>Hasil Balasan AI</strong>
+          AI menyusun jawaban berbasis konteks usaha tanpa boleh mengarang fakta/stok.
+        </div>
+        <div style="height: 140px;"></div>
+      </div>
+
+      <!-- Lane 5: Pemilik Usaha & SQLite -->
+      <div class="lane lane-5">
+        <div class="lane-title">5. Pemilik Usaha & DB</div>
+        <div class="node accent-amber">
+          <span class="flow-tag tag-db">Dashboard Web</span>
+          <strong>Kelola Data Usaha:</strong>
+          • <code>/app/profile</code> Profil Toko<br>
+          • <code>/app/products</code> Produk & Stok<br>
+          • <code>/app</code> Scan QR & System Prompt<br>
+          • <code>/app/history</code> Pantau Chat Log
+        </div>
+        <div class="arrow-down">↓</div>
+        <div class="node accent-amber" style="background:#261c10;">
+          <span class="flow-tag tag-db">SQLite Storage</span>
+          <strong>Database Lokal (app.db):</strong>
+          • <code>users</code>: Akun & Token<br>
+          • <code>business_profiles</code>: Info Toko<br>
+          • <code>products</code>: Harga & Stok<br>
+          • <code>chat_logs</code>: Riwayat Chat
+        </div>
+        <div style="height: 295px; border: 1px dashed #3d2f1f; border-radius: 10px; margin-top: 10px; display: flex; align-items: center; justify-content: center; color: #947a54; font-size: 11px; text-align: center; padding: 10px;">
+          Perubahan harga atau stok pada dashboard langsung terpakai pada chat berikutnya secara realtime.
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div><b>BalasWA UMKM Architecture</b> · File Diagram: <code>docs/alur-sistem.drawio</code></div>
+      <div>Tunnel: <b>Cloudflare Quick Tunnel (HTTPS)</b> · Engine: <b>Node.js + whatsapp-web.js</b></div>
+    </div>
+  </div>
+</body>
+</html>
