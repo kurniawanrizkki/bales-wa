@@ -11,6 +11,7 @@ const { SQLiteSessionStore } = require('./session-store');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.set('trust proxy', 1);
 
 process.on('uncaughtException', (err) => {
   console.error('[Process Error]', err.message);
@@ -33,7 +34,7 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
+      secure: 'auto',
       maxAge: 1000 * 60 * 60 * 24 * 30
     }
   })
@@ -84,8 +85,10 @@ app.post('/api/auth/register', (req, res) => {
   const hash = bcrypt.hashSync(password, 10);
   const userId = UserModel.create(email, hash);
   req.session.userId = userId;
-
-  res.json({ message: 'Registrasi berhasil', userId });
+  req.session.save((err) => {
+    if (err) return res.status(500).json({ error: 'Gagal menyimpan sesi.' });
+    res.json({ message: 'Registrasi berhasil', userId });
+  });
 });
 
 app.post('/api/auth/login', (req, res) => {
@@ -100,7 +103,10 @@ app.post('/api/auth/login', (req, res) => {
   }
 
   req.session.userId = user.id;
-  res.json({ message: 'Login berhasil' });
+  req.session.save((err) => {
+    if (err) return res.status(500).json({ error: 'Gagal menyimpan sesi.' });
+    res.json({ message: 'Login berhasil' });
+  });
 });
 
 app.post('/api/auth/logout', (req, res) => {
